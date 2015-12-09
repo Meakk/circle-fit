@@ -92,7 +92,7 @@ var CIRCLEFIT = (function () {
 
     var center = {
       x: (c2-q*c1)/(b2-q*b1),
-      y: (c1-b1*vc)/a1
+      y: (c1-b1*c.y)/a1
     };
 
     result.radius = Math.sqrt(c.x*c.x + c.y*c.y + (a1+b2)/points.length);
