@@ -90,15 +90,13 @@ var CIRCLEFIT = (function () {
 
     var q = a2/a1;
 
-    var center = {
-      x: (c2-q*c1)/(b2-q*b1),
-      y: (c1-b1*c.y)/a1
-    };
+    var cy = (c2-q*c1)/(b2-q*b1);
+    var cx = (c1-b1*cy)/a1;
 
-    result.radius = Math.sqrt(c.x*c.x + c.y*c.y + (a1+b2)/points.length);
+    result.radius = Math.sqrt(cx*cx + cy*cy + (a1+b2)/points.length);
 
-    result.center.x = center.x + m.x;
-    result.center.y = center.y + m.y;
+    result.center.x = cx + m.x;
+    result.center.y = cy + m.y;
 
     result.residue = points.reduce(function(p,c) {
        var t = sqr(result.radius) - sqr(c.x - result.center.x) - sqr(c.y - result.center.y);
