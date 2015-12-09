@@ -40,6 +40,9 @@ var CIRCLEFIT = (function () {
 
   my.compute = function () {
     var result = {
+      points: points,
+      projections: [],
+      distances: [],
       success: false,
       center: {x:0, y:0},
       radius: 0,
@@ -88,22 +91,29 @@ var CIRCLEFIT = (function () {
       return result;
     }
 
-    result.success = true;
-
     var q = a2/a1;
 
     var cy = (c2-q*c1)/(b2-q*b1);
     var cx = (c1-b1*cy)/a1;
 
-    result.radius = Math.sqrt(cx*cx + cy*cy + (a1+b2)/points.length);
+    var radius2 = cx*cx + cy*cy + (a1+b2)/points.length;
+    result.radius = Math.sqrt(radius2);
 
     result.center.x = cx + m.x;
     result.center.y = cy + m.y;
 
-    result.residue = points.reduce(function(p,c) {
-       var t = sqr(result.radius) - sqr(c.x - result.center.x) - sqr(c.y - result.center.y);
-       return p + t*t;
-     });
+    for (var i=0; i<points.length; i++) {
+      var v = {x: points[i].x - result.center.x, y: points[i].y - result.center.y};
+      var len2 = v.x*v.x + v.y*v.y;
+      result.residue += radius2 - len2;
+      var len = Math.sqrt(len2);
+
+      result.distances.push(len - result.radius);
+      result.projections.push({
+        x: result.center.x + v.x*result.radius/len,
+        y: result.center.y + v.y*result.radius/len
+      });      
+    }
 
     return result;
   }
