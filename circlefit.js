@@ -88,6 +88,8 @@ var CIRCLEFIT = (function () {
       return result;
     }
 
+    result.success = true;
+
     var q = a2/a1;
 
     var cy = (c2-q*c1)/(b2-q*b1);
