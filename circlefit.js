@@ -86,7 +86,7 @@ var CIRCLEFIT = (function () {
       return p + 0.5*(c.y*c.y*c.y + c.x*c.x*c.y);
     },0);
 
-    var solution = linearSolve2x2([Sxx, Sxy, Sxy, Syy], [v1, v2]);
+    var sol = linearSolve2x2([Sxx, Sxy, Sxy, Syy], [v1, v2]);
 
     if (sol === false) {
       //not enough points or points are colinears
