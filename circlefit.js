@@ -26,8 +26,12 @@ var CIRCLEFIT = (function () {
   var my = {},
       points = [];
 
-  function sqr(a) {
-    return a*a;
+  function linearSolve2x2(matrix, vector) {
+    var det = matrix[0]*matrix[3] - matrix[1]*matrix[2];
+    if (det < 1e-8) return false; //no solution
+    var y = (matrix[0]*vector[1] - matrix[2]*vector[0])/det;
+    var x = (vector[0] - matrix[1]*y)/matrix[0];
+    return [x,y];
   }
 
   my.addPoint = function (x, y) {
@@ -61,49 +65,42 @@ var CIRCLEFIT = (function () {
               y: e.y - m.y};
     });
 
-    //precompute sums
-    var a1 = u.reduce(function(p,c) {
+    //solve linear equation
+    var Sxx = u.reduce(function(p,c) {
       return p + c.x*c.x;
     },0);
 
-    var b1 = u.reduce(function(p,c) {
+    var Sxy = u.reduce(function(p,c) {
       return p + c.x*c.y;
     },0);
 
-    var c1 = u.reduce(function(p,c) {
-      return p + 0.5*(c.x*c.x*c.x + c.x*c.y*c.y);
-    },0);
-
-    var a2 = u.reduce(function(p,c) {
-      return p + c.x*c.y;
-    },0);
-
-    var b2 = u.reduce(function(p,c) {
+    var Syy = u.reduce(function(p,c) {
       return p + c.y*c.y;
     },0);
 
-    var c2 = u.reduce(function(p,c) {
+    var v1 = u.reduce(function(p,c) {
+      return p + 0.5*(c.x*c.x*c.x + c.x*c.y*c.y);
+    },0);
+
+    var v2 = u.reduce(function(p,c) {
       return p + 0.5*(c.y*c.y*c.y + c.x*c.x*c.y);
     },0);
 
-    if (a1 === 0 || b2 === 0) {
+    var solution = linearSolve2x2([Sxx, Sxy, Sxy, Syy], [v1, v2]);
+
+    if (sol === false) {
       //not enough points or points are colinears
       return result;
     }
 
     result.success = true;
 
-    //solve linear equation
-    var q = a2/a1;
-    var cy = (c2-q*c1)/(b2-q*b1);
-    var cx = (c1-b1*cy)/a1;
-
     //compute radius from circle equation
-    var radius2 = cx*cx + cy*cy + (a1+b2)/points.length;
+    var radius2 = sol[0]*sol[0] + sol[1]*sol[1] + (Sxx+Syy)/points.length;
     result.radius = Math.sqrt(radius2);
 
-    result.center.x = cx + m.x;
-    result.center.y = cy + m.y;
+    result.center.x = sol[0] + m.x;
+    result.center.y = sol[1] + m.y;
 
     for (var i=0; i<points.length; i++) {
       var v = {x: points[i].x - result.center.x, y: points[i].y - result.center.y};
