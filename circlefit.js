@@ -93,11 +93,12 @@ var CIRCLEFIT = (function () {
 
     result.success = true;
 
+    //solve linear equation
     var q = a2/a1;
-
     var cy = (c2-q*c1)/(b2-q*b1);
     var cx = (c1-b1*cy)/a1;
 
+    //compute radius from circle equation
     var radius2 = cx*cx + cy*cy + (a1+b2)/points.length;
     result.radius = Math.sqrt(radius2);
 
