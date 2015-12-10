@@ -102,18 +102,17 @@ var CIRCLEFIT = (function () {
     result.center.x = sol[0] + m.x;
     result.center.y = sol[1] + m.y;
 
-    for (var i=0; i<points.length; i++) {
-      var v = {x: points[i].x - result.center.x, y: points[i].y - result.center.y};
+    points.forEach(function(p) {
+      var v = {x: p.x - result.center.x, y: p.y - result.center.y};
       var len2 = v.x*v.x + v.y*v.y;
       result.residue += radius2 - len2;
       var len = Math.sqrt(len2);
-
       result.distances.push(len - result.radius);
       result.projections.push({
         x: result.center.x + v.x*result.radius/len,
         y: result.center.y + v.y*result.radius/len
-      });      
-    }
+      });     
+    });
 
     return result;
   }
