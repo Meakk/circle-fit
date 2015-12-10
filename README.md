@@ -1,2 +1,2 @@
 # circle-fit
-A JavaScript library for quick circle fitting
+A JavaScript library for fast circle fitting
