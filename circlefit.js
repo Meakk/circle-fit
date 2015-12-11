@@ -50,7 +50,8 @@ var CIRCLEFIT = (function () {
       success: false,
       center: {x:0, y:0},
       radius: 0,
-      residue: 0
+      residue: 0,
+      computationTime: performance.now()
     };
 
     //means
@@ -113,6 +114,8 @@ var CIRCLEFIT = (function () {
         y: result.center.y + v.y*result.radius/len
       });     
     });
+
+    result.computationTime = performance.now() - result.computationTime;
 
     return result;
   }
