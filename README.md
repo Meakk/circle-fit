@@ -4,11 +4,11 @@ A JavaScript library for fast circle fitting of a set of 2D points.
 The implementation is based on a Least-Squares method to find the 3 unknowns : x and y coordinates and the radius.
 
 # Speed and stability
-The algorithm do not contain any iterative solvers and will find a solution in linear time, meaning that you will have the result instantly.
+The algorithm do not contain any iterative solvers and will find a solution in linear time, meaning that you will have the result instantly.  
 This library handles degenerate cases when you do not have enough non-colinear points to determine a correct circle by returning an error flag.
 
 # Getting started
-The library is simple to use. Include it to define a global object `CIRCLEFIT`.
+The library is simple to use. Include `circlefit.js`, the global object `CIRCLEFIT` is automatically created.
 This object have 3 methods :
 * `addPoint(x, y)` : add a point to the set
 * `clearPoints()` : remove all points
