@@ -36,3 +36,6 @@ The result object contains more than the circle informations, here are all the p
     console.log("Center = {" + result.center.x + "," + result.center.y + "}, Radius = " + result.radius);
   }
 ```
+
+![Img1](http://migl.io/img/cf_1.png)
+![Img2](http://migl.io/img/cf_2.png)
